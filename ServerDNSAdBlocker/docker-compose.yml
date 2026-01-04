@@ -1,0 +1,23 @@
+version: '3.8'
+services:
+  dns-blocker:
+    build: .
+    container_name: dns_blocker
+    ports:
+      - "53:53/udp"
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - ./blacklist.txt:/app/blacklist.txt:ro
+      - ./blocked.txt:/app/blocked.txt
+    user: "1000:1000"
+networks:
+  default:
+    driver: bridge
+
+#explciatii componente:
+#build: construieste imaginea folosind Dockerfile din director
+#ports: mapeaza portul udp 53 al containerului la portul 53 al gazdei
+#cap_add: adauga permisiunea NET_ADMIN pentru a asculta porturi privilegiate
+#volumes: monteaza fisierul blacklist.txt in container pentru configurare dinamica
+#networks: foloseste reteaua bridge implicita pentru acces la localhost
